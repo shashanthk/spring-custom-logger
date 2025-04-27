@@ -1,5 +1,7 @@
 package io.github.shashanthk.logger.controller;
 
+import io.github.shashanthk.logger.service.TestService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,14 +13,12 @@ import java.util.Map;
 @RestController
 public class TestController {
 
+    @Autowired
+    private TestService testService;
+
     @GetMapping("/users")
     public List<String> getUsers() {
-
-        return List.of(
-                "User 1",
-                "User 2",
-                "User 3"
-        );
+        return testService.listUsers("Shashanth");
     }
 
     @PostMapping("/users")
