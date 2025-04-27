@@ -1,6 +1,5 @@
 package com.shashanth.logger.filter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shashanth.logger.context.RequestContext;
 import com.shashanth.logger.util.LogHelper;
 import com.shashanth.logger.util.RequestResponseBodyParser;
@@ -27,7 +26,6 @@ import java.util.UUID;
 public class RequestResponseLoggingFilter extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestResponseLoggingFilter.class);
-    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     protected void doFilterInternal(
@@ -39,6 +37,8 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
         // Wrap request and response for caching bodies
         ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper(response);
+
+        long startTime = System.currentTimeMillis();  // Capture start time
 
         try {
             // Set RequestContext with request ID and IP Address
@@ -52,8 +52,11 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
             filterChain.doFilter(wrappedRequest, wrappedResponse);
 
         } finally {
+
+            long endTime = System.currentTimeMillis(); // Capture end time
+
             // After completion of the request, log details
-            logRequestAndResponse(wrappedRequest, wrappedResponse);
+            logRequestAndResponse(wrappedRequest, wrappedResponse, startTime, endTime);
 
             // VERY IMPORTANT: copy cached response back to actual response
             wrappedResponse.copyBodyToResponse();
@@ -66,7 +69,10 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
     /**
      * Logs the request and response details after request completion.
      */
-    private void logRequestAndResponse(ContentCachingRequestWrapper request, ContentCachingResponseWrapper response) {
+    private void logRequestAndResponse(
+            ContentCachingRequestWrapper request, ContentCachingResponseWrapper response,
+            long startTime, long endTime
+    ) {
         try {
 
             LogHelper.info(
@@ -75,6 +81,9 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
                             "requestUri", request.getRequestURI(),
                             "requestMethod", request.getMethod(),
                             "responseStatus", response.getStatus(),
+                            "startTime", startTime,
+                            "endTime", endTime,
+                            "durationMs", (endTime - startTime),
                             "requestParams", RequestResponseBodyParser.extractRequestParams(request),
                             "requestBody", RequestResponseBodyParser.parseBodyAsJson(request.getContentAsByteArray(), request.getCharacterEncoding()),
                             "responseBody", RequestResponseBodyParser.parseBodyAsJson(response.getContentAsByteArray(), response.getCharacterEncoding())
