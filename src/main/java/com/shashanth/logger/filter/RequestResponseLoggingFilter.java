@@ -1,9 +1,9 @@
 package com.shashanth.logger.filter;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shashanth.logger.context.RequestContext;
 import com.shashanth.logger.util.LogHelper;
+import com.shashanth.logger.util.RequestResponseBodyParser;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,9 +16,6 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -71,9 +68,6 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
      */
     private void logRequestAndResponse(ContentCachingRequestWrapper request, ContentCachingResponseWrapper response) {
         try {
-            Object requestBody = getContentAsJson(request.getContentAsByteArray(), request.getCharacterEncoding());
-            Object responseBody = getContentAsJson(response.getContentAsByteArray(), response.getCharacterEncoding());
-            Map<String, Object> requestParams = extractRequestParams(request);
 
             LogHelper.info(
                     "Request/Response Detail",
@@ -81,54 +75,14 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
                             "requestUri", request.getRequestURI(),
                             "requestMethod", request.getMethod(),
                             "responseStatus", response.getStatus(),
-                            "requestParams", requestParams,
-                            "requestBody", requestBody,
-                            "responseBody", responseBody
+                            "requestParams", RequestResponseBodyParser.extractRequestParams(request),
+                            "requestBody", RequestResponseBodyParser.parseBodyAsJson(request.getContentAsByteArray(), request.getCharacterEncoding()),
+                            "responseBody", RequestResponseBodyParser.parseBodyAsJson(response.getContentAsByteArray(), response.getCharacterEncoding())
                     )
             );
 
         } catch (Exception e) {
             logger.error("Failed to log request/response", e);
         }
-    }
-
-    /**
-     * Parses the given byte content into a JSON object if possible.
-     * Falls back gracefully if body is empty or invalid JSON.
-     */
-    private Object getContentAsJson(byte[] content, String encoding) {
-
-        if (content == null || content.length == 0) {
-            return "";
-        }
-
-        try {
-
-            String body = new String(content, Optional.ofNullable(encoding).orElse(StandardCharsets.UTF_8.name()));
-
-            if (body.isBlank()) {
-                return "";
-            }
-
-            // Try to parse as JSON
-            return objectMapper.readValue(body, Object.class);
-        } catch (UnsupportedEncodingException | JsonProcessingException e) {
-            logger.warn("Failed to parse request/response body to JSON", e);
-            return "Failed to parse content";
-        }
-    }
-
-    /**
-     * Extracts query parameters into a simple Map.
-     * Single-value arrays are flattened for cleaner logs.
-     */
-    private Map<String, Object> extractRequestParams(HttpServletRequest request) {
-
-        Map<String, String[]> paramMap = request.getParameterMap();
-        Map<String, Object> flatParams = new HashMap<>();
-
-        paramMap.forEach((key, value) -> flatParams.put(key, (value != null && value.length == 1) ? value[0] : value));
-
-        return flatParams;
     }
 }
