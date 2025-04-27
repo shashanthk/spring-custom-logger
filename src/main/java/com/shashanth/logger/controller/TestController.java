@@ -2,9 +2,12 @@ package com.shashanth.logger.controller;
 
 import com.shashanth.logger.util.LogHelper;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class TestController {
@@ -19,6 +22,14 @@ public class TestController {
                 "User 2",
                 "User 3"
         );
+    }
+
+    @PostMapping("/users")
+    public Map<String, Object> saveUser(@RequestBody Map<String, Object> body) {
+
+        LogHelper.info("Save user", body);
+
+        return body;
     }
 
 }
