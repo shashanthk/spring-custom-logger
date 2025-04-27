@@ -1,6 +1,6 @@
-package com.shashanth.logger.util;
+package io.github.shashanthk.logger.util;
 
-import com.shashanth.logger.service.LoggerService;
+import io.github.shashanthk.logger.service.LoggerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,9 +1,9 @@
-package com.shashanth.logger.service;
+package io.github.shashanthk.logger.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shashanth.logger.context.RequestContext;
-import com.shashanth.logger.model.LogEvent;
+import io.github.shashanthk.logger.context.RequestContext;
+import io.github.shashanthk.logger.model.LogEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

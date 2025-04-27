@@ -1,4 +1,4 @@
-package com.shashanth.logger;
+package io.github.shashanthk.logger;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,7 +1,7 @@
-package com.shashanth.logger.config;
+package io.github.shashanthk.logger.config;
 
-import com.shashanth.logger.filter.RequestResponseLoggingFilter;
-import com.shashanth.logger.service.LoggerService;
+import io.github.shashanthk.logger.filter.RequestResponseLoggingFilter;
+import io.github.shashanthk.logger.service.LoggerService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.example.logger.config.LoggerAutoConfiguration
+io.github.shashanthk.logger.config.LoggerAutoConfiguration

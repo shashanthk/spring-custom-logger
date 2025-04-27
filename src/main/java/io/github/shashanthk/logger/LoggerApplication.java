@@ -1,4 +1,4 @@
-package com.shashanth.logger;
+package io.github.shashanthk.logger;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

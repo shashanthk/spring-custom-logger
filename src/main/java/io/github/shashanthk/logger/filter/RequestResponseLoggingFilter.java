@@ -1,8 +1,8 @@
-package com.shashanth.logger.filter;
+package io.github.shashanthk.logger.filter;
 
-import com.shashanth.logger.context.RequestContext;
-import com.shashanth.logger.util.LogHelper;
-import com.shashanth.logger.util.RequestResponseBodyParser;
+import io.github.shashanthk.logger.context.RequestContext;
+import io.github.shashanthk.logger.util.LogHelper;
+import io.github.shashanthk.logger.util.RequestResponseBodyParser;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,4 +1,4 @@
-package com.shashanth.logger.model;
+package io.github.shashanthk.logger.model;
 
 import lombok.Builder;
 import lombok.Data;

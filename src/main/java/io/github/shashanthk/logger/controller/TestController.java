@@ -1,4 +1,4 @@
-package com.shashanth.logger.controller;
+package io.github.shashanthk.logger.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

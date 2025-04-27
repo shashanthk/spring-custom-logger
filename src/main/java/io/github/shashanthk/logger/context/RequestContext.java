@@ -1,4 +1,4 @@
-package com.shashanth.logger.context;
+package io.github.shashanthk.logger.context;
 
 public class RequestContext {
 
