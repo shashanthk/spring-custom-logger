@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoggerService {
 
@@ -21,12 +23,20 @@ public class LoggerService {
                     .requestId(RequestContext.getRequestId())
                     .timestamp(Instant.now().toString())
                     .data(data)
+                    .metaData(_dynamicMetadata())
                     .build();
 
             logger.info(objectMapper.writeValueAsString(event));
         } catch (Exception e) {
             logger.error("Failed to log event", e);
         }
+    }
+
+    private Map<String, Object> _dynamicMetadata() {
+        Map<String, Object> metadata = new HashMap<>();
+        metadata.put("environment", "production"); // You can inject from env
+        metadata.put("ipAddress", RequestContext.getIpAddress());
+        return metadata;
     }
 }
 

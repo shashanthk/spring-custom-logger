@@ -37,5 +37,9 @@ public class LogHelper {
     public static void debug(String message) {
         loggerService.log("DEBUG", message, null);
     }
+
+    public static void audit(String message, Object data) {
+        loggerService.log("AUDIT", message, data);
+    }
 }
 
