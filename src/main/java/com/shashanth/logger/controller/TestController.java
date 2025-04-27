@@ -1,6 +1,5 @@
 package com.shashanth.logger.controller;
 
-import com.shashanth.logger.util.LogHelper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,8 +14,6 @@ public class TestController {
     @GetMapping("/users")
     public List<String> getUsers() {
 
-        LogHelper.info("Reached to controller");
-
         return List.of(
                 "User 1",
                 "User 2",
@@ -26,9 +23,6 @@ public class TestController {
 
     @PostMapping("/users")
     public Map<String, Object> saveUser(@RequestBody Map<String, Object> body) {
-
-        LogHelper.info("Save user", body);
-
         return body;
     }
 
